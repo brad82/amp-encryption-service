@@ -17,8 +17,8 @@ package main
 import (
 	"encoding/base64"
 	"encoding/json"
+	"io"
 	"net/http"
-	"os"
 
 	"github.com/google/tink/go/aead"
 	"github.com/google/tink/go/core/registry"
@@ -113,7 +113,7 @@ func RetrieveTinkPublicKey(publicKeyURL string) (tinkpb.Keyset, error) {
 	return *ks, nil
 }
 
-func ReadTinkPrivKey(privKeyFile *os.File) (tinkpb.Keyset, error) {
+func ReadTinkPrivKey(privKeyFile io.Reader) (tinkpb.Keyset, error) {
 	r := keyset.NewJSONReader(privKeyFile)
 	ks, err := r.Read()
 	if err != nil {

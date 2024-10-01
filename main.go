@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"log"
 	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	tinkpb "github.com/google/tink/go/proto/tink_go_proto"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 const googleDevPublicKeyURL string = "https://news.google.com/swg/encryption/keys/dev/tink/public_key"
@@ -30,13 +33,12 @@ func initPublicKeys() {
 }
 
 func initPrivateKeys() {
-	privFile, err := os.Open("./assets/keayset.json")
-	if err != nil {
-		log.Fatal(err)
-		return
+	sk := os.Getenv("PRIVATE_KEY")
+	if len(sk) == 0 {
+		log.Fatal("Cannot start application without a private key")
 	}
-
-	pk, err := ReadTinkPrivKey(privFile)
+	r := bytes.NewBufferString(sk)
+	pk, err := ReadTinkPrivKey(r)
 	if err != nil {
 		log.Fatal(err)
 	}

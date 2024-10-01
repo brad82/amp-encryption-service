@@ -1,0 +1,5 @@
+services:
+  encryption-service:
+    build: .
+    environment:
+      - PRIVATE_KEY=
