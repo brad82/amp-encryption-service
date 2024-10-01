@@ -20,8 +20,8 @@ var privKey tinkpb.Keyset
 func initPublicKeys() {
 
 	km := make(map[string]string)
-	km["memoori.com"] = "https://memoori.com/.well-known/swg/tink/pubkey.json"
 	km["google.com"] = googleDevPublicKeyURL
+	km["local"] = "https://memoori.com/.well-known/swg/tink/pubkey.json"
 
 	for domain, url := range km {
 		pubKey, err := RetrieveTinkPublicKey(url)
