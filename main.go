@@ -60,7 +60,7 @@ func main() {
 	r.Use(AuthenticateWithPSK(psk))
 
 	r.POST("/", encodeFragment)
-	r.GET("/authorize", decodeDocumentKey)
+	r.GET("/", decodeDocumentKey)
 
 	r.Run(":8080")
 }
