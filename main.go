@@ -18,7 +18,6 @@ var pubKeys map[string]tinkpb.Keyset = make(map[string]tinkpb.Keyset)
 var privKey tinkpb.Keyset
 
 func initPublicKeys() {
-
 	km := make(map[string]string)
 	km["google.com"] = googleDevPublicKeyURL
 	km["local"] = "https://memoori.com/.well-known/swg/tink/pubkey.json"
@@ -33,9 +32,9 @@ func initPublicKeys() {
 }
 
 func initPrivateKeys() {
-	sk := os.Getenv("PRIVATE_KEY")
+	sk := os.Getenv("AMP_API_PRIVATE_KEY")
 	if len(sk) == 0 {
-		log.Fatal("Cannot start application without a private key")
+		log.Fatal("Cannot start application without a private key (AMP_API_PRIVATE_KEY)")
 	}
 	r := bytes.NewBufferString(sk)
 	pk, err := ReadTinkPrivKey(r)
@@ -51,6 +50,15 @@ func main() {
 	initPrivateKeys()
 
 	r := gin.Default()
+
+	psk := os.Getenv("AMP_API_PSK")
+	if len(psk) == 0 {
+		log.Fatal("Cannot start application without a pre-shared API key (AMP_API_PSK)")
+		return
+	}
+
+	r.Use(AuthenticateWithPSK(psk))
+
 	r.POST("/", encodeFragment)
 	r.GET("/authorize", decodeDocumentKey)
 
