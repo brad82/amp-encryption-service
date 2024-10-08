@@ -33,7 +33,7 @@ func encodeFragment(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, er)
 }
 
-func decodyDocumentKey(c *gin.Context) {
+func decodeDocumentKey(c *gin.Context) {
 	crypt := c.DefaultQuery("crypt", "")
 	if len(crypt) == 0 {
 		c.IndentedJSON(http.StatusBadRequest, errors.New("invalid crypt token"))

@@ -52,7 +52,7 @@ func main() {
 
 	r := gin.Default()
 	r.POST("/", encodeFragment)
-	r.GET("authorize", decodyDocumentKey)
+	r.GET("/authorize", decodeDocumentKey)
 
 	r.Run(":8080")
 }
